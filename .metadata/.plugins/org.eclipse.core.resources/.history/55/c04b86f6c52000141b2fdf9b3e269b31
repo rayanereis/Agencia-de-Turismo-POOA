@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="agenciaEJB">
+		<class>agenciaEJB.AgenciaAerea</class>
+		<class>agenciaEJB.Hotel</class>
+		<class>agenciaEJB.Pacote</class>
+		<class>agenciaEJB.QualificacaoAgencia</class>
+		<class>agenciaEJB.QualificacaoHotel</class>
+		<class>agenciaEJB.ReservaDiaria</class>
+		<class>agenciaEJB.ReservaPassagem</class>
+		<class>agenciaEJB.Usuario</class>
+	</persistence-unit>
+</persistence>

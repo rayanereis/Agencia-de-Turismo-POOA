@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Agencia de Turismo</title>
+	</h:head> 
+	<body> 
+		<p:stack icon="/resources/demo/images/dock/stack.png" expanded="true">
+   	 	<p:menuitem value="Agencia Aerea" icon="/resources/demo/images/dock/home.png" url="agencia.xhtml"/>
+    	<p:menuitem value="Hotel" icon="/resources/demo/images/dock/music.png" url="hotel.xhtml"/>
+    	<p:menuitem value="Usuario" icon="/resources/demo/images/dock/video.png" url="usuario.xhtml"/>
+  
+</p:stack>
+	</body> 
+</html>
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+Teste</br>
+
+
+
+
+
+</body>
+</html>

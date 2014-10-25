@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="AgenciaEJB"
+		transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/jboss/datasource/agencia</jta-data-source>
+		<class>br.iff.pooa20141.agencia.model.entity.Agencia</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Hotel</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Pacote</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Qualificacaohotel</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Qualificacaopassagem</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Reservadiaria</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Reservapassagem</class>
+		<class>br.iff.pooa20141.agencia.model.entity.Usuario</class>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.connection.release_mode" value="on_close" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.archive.autodetection" value="class" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>

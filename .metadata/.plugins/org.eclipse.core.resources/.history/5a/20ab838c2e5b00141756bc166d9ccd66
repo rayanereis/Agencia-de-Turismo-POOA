@@ -1,0 +1,112 @@
+package br.iff.pooa20141.agencia.web.controller;
+
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.context.RequestContext;
+
+import br.iff.pooa20141.agencia.model.controller.AgenciaPersistence;
+import br.iff.pooa20141.agencia.model.controller.PacotePersistence;
+import br.iff.pooa20141.agencia.model.entity.Agencia;
+import br.iff.pooa20141.agencia.model.entity.Pacote;
+
+
+@ManagedBean(name = "PacotePrime")
+@SessionScoped
+public class PacotebWebController {
+
+	@EJB(lookup = "java:app/AgenciaWEB/AgenciaPersistence!br.iff.pooa20141.agencia.model.controller.AgenciaPersistence")
+	private AgenciaPersistence jagencia;
+
+	@EJB(lookup = "java:app/AgenciaWEB/PacotePersistence!br.iff.pooa20141.agencia.model.controller.PacotePersistence")
+	private PacotePersistence jPacote;
+
+	private Pacote Pacote;
+	private Pacote PacoteSelecionado = new Pacote();
+
+	public Pacote getPacote() {
+		if (Pacote == null) {
+			Pacote = new Pacote();
+		}
+		return Pacote;
+	}
+
+	public List<Pacote> getAllPacote() {
+		return jPacote.findAll();
+	}
+
+	public List<Agencia> getAllAgencia() {
+		return jagencia.findAll();
+	}
+
+	public void salva() {
+		
+		if (jPacote.find(Pacote.getUid()) != null) {
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("reserva de diaria Ja Cadastrado"));
+
+		} else {
+
+			jPacote.insert(Pacote);
+
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("Cadastrado com sucesso!"));
+		}
+		
+		RequestContext.getCurrentInstance().execute("cadastro.hide()");
+		;
+		
+	}
+
+	public void delete() {
+
+		if (jPacote.find(PacoteSelecionado.getUid()) == null) {
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("A reserva de diaria não Existe"));
+
+		} else {
+			jPacote.delete(PacoteSelecionado.getUid());
+
+		}
+		RequestContext.getCurrentInstance().execute("deleta.hide()");
+	}
+
+	public Pacote getPacoteSelecionado() {
+
+		return PacoteSelecionado;
+	}
+
+	public void setPacoteSelecionado(Pacote PacoteSelecionado) {
+		this.PacoteSelecionado = PacoteSelecionado;
+
+	}
+
+	public void update() {
+
+		
+		if (jPacote.find(PacoteSelecionado.getUid()) == null) {
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage(" A reserva da diaria não Existe"));
+
+		} else {
+
+			jPacote.update(PacoteSelecionado);
+
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("Alterado com sucesso!"));
+		}
+		RequestContext.getCurrentInstance().execute("altera.hide()");
+		;
+		
+	}
+
+	public PacotebWebController() {
+
+	}
+
+}

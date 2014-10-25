@@ -1,0 +1,42 @@
+package br.iff.pooa20141.agencia.model.controller;
+
+import java.util.List;
+
+import br.iff.pooa20141.agencia.model.entity.Agencia;
+
+public class AgenciaPersistence extends AbstractPersistence implements
+		AgenciaPersistenceRemote {
+
+	@Override
+	public AgenciaPersistenceRemote inserir(String uid, String nome) {
+		Agencia agencia = new Agencia();
+		//settar todos valores para cada atributos
+		return null;
+	}
+
+	@Override
+	public AgenciaPersistenceRemote update(String uid, String nome) {
+		//igual ao inserir, mas nao cria um novo obj mas sim busca no bd
+		
+		return null;
+	}
+
+	@Override
+	public AgenciaPersistenceRemote find(String uid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(String uid) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<AgenciaPersistenceRemote> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

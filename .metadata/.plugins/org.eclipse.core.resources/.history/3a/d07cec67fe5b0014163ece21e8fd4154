@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Pacotes</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Pacote" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="pacote"
+					value="#{pacotePrime.allPacote}" rowKey="#{pacote.uid}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{pacotePrime.pacoteSelecionado}">
+	
+					
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{pacote.uid}" />
+					</p:column> 
+					
+
+					<p:column headerText="Quantidade de Pessoas">
+						<h:outputText value="#{pacote.quantidadepessoas}" />
+					</p:column>
+										
+					<p:column headerText="Total">
+						<h:outputText value="#{pacote.total}" />
+					</p:column>
+					
+
+					<p:column headerText="Hotel">
+						<h:outputText value="#{pacote.reservadiariaBean.hotelBean.nome}" />
+					</p:column>
+					
+					<p:column headerText="Agencia Aerea">
+						<h:outputText value="#{pacote.reservapassagemBean.agenciaBean.nome}" />
+					</p:column>
+					
+					<p:column headerText="Data da Viagem">
+						<h:outputText value="#{pacote.reservapassagemBean.datapartida}" />
+					</p:column>
+
+					<p:column headerText="Usuario">
+						<h:outputText value="#{pacote.usuarioBean.nome}" />
+					</p:column>
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fpacote:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":fpacoteA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+				
+			<p:commandButton value="Voltar" action="index.xhtml" icon="ui-icon-home"/>
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Pacote-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Pacote"
+		widgetVar="cadastro" resizable="true" width="800" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="fpacote">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+				
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{pacotePrime.pacote.uid}"
+					style=" width : 125px;" />
+					
+			<h:outputLabel value="Quantidade de Pessoas" />
+				<p:inputText value="#{pacotePrime.pacote.quantidadepessoas}"
+					style=" width : 125px;" />
+
+
+<h:outputLabel value="Reservar Passagem" />
+				<p:selectOneMenu id="reservapassagem"
+					value="#{pacotePrime.pacote.reservapassagemBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:400px" panelStyle="width:400px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Reservapassagem" />
+					<f:selectItems value="#{pacotePrime.allReservapassagem}" var="reservapassagemBean"
+						itemLabel="#{reservapassagemBean.destino}" itemValue="#{reservapassagemBean}" />
+						<p:column>
+						   #{i.origem} - #{i.destino} - #{i.horapartida} - #{i.minutopartida} - #{i.valorunitario}
+						</p:column>
+				</p:selectOneMenu>
+				
+
+				<h:outputLabel value="Reservar diaria" />
+				<p:selectOneMenu id="reservadiaria"
+					value="#{pacotePrime.pacote.reservadiariaBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Reservadiaria" />
+					<f:selectItems value="#{pacotePrime.allReservadiaria}" var="reservadiariaBean"
+						itemLabel="#{reservadiariaBean.hotelBean}" itemValue="#{reservadiariaBean}" />
+						<p:column>
+						  #{i.hotelBean.nome} -{i.periodoinicial} - #{i.periodofinal} - #{i.valorunitario}
+						</p:column>
+				</p:selectOneMenu>
+				
+				<h:outputLabel value="Usuario" />
+				<p:selectOneMenu id="usuario"
+					value="#{pacotePrime.pacote.usuarioBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Usuario" />
+					<f:selectItems value="#{pacotePrime.allUsuario}" var="usuarioBean"
+						itemLabel="#{usuarioBean.nome}" itemValue="#{usuarioBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+				
+				
+				
+
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{pacotePrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" heigth="600" showEffect="clip" hideEffect="explode">
+		<h:form id="fpacoteA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+							<h:outputLabel value="Codigo" />
+				<p:inputText value="#{pacotePrime.pacote.uid}"
+					style=" width : 125px;" />
+					
+			<h:outputLabel value="Quantidade de Pessoas" />
+				<p:inputText value="#{pacotePrime.pacote.quantidadepessoas}"
+					style=" width : 125px;" />
+
+
+<h:outputLabel value="Reservar Passagem" />
+				<p:selectOneMenu id="reservapassagem"
+					value="#{pacotePrime.pacote.reservapassagemBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:800px" panelStyle="width:800px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Reservapassagem" />
+					<f:selectItems value="#{pacotePrime.allReservapassagem}" var="reservapassagemBean"
+						itemLabel="#{reservapassagemBean.destino}" itemValue="#{reservapassagemBean}" />
+						<p:column>
+						   #{i.origem} - #{i.destino} - #{i.horapartida} - #{i.minutopartida} - #{i.valorunitario}
+						</p:column>
+				</p:selectOneMenu>
+				
+						<h:outputLabel value="Reservar diaria" />
+				<p:selectOneMenu id="reservadiaria"
+					value="#{pacotePrime.pacote.reservadiariaBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Reservadiaria" />
+					<f:selectItems value="#{pacotePrime.allReservadiaria}" var="reservadiariaBean"
+						itemLabel="#{reservadiariaBean.hotelBean}" itemValue="#{reservadiariaBean}" />
+						<p:column>
+						  #{i.periodoinicial} - #{i.periodofinal} - #{i.vagasdisponiveis} - #{i.valorunitario}
+						</p:column>
+				</p:selectOneMenu>
+
+				
+				<h:outputLabel value="Usuario" />
+				<p:selectOneMenu id="usuario"
+					value="#{pacotePrime.pacote.usuarioBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Usuario" />
+					<f:selectItems value="#{pacotePrime.allUsuario}" var="usuarioBean"
+						itemLabel="#{usuarioBean.nome}" itemValue="#{usuarioBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{pacotePrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Pacote" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Pacote?" />
+			<br />
+			<p:commandButton value="Sim" action="#{pacotePrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

@@ -1,0 +1,17 @@
+package br.iff.pooa20141.agencia.model.controller;
+
+	import java.util.List;
+
+import javax.ejb.Remote;
+import javax.xml.bind.annotation.XmlElement;
+	@Remote
+	public interface AgenciaPersistenceRemote {
+		
+	public AgenciaPersistenceRemote inserir(String uid, String nome);
+	public AgenciaPersistenceRemote update(String uid, String nome);
+	public AgenciaPersistenceRemote find(String uid);
+	public void delete(String uid);
+	@XmlElement(name = "fabricante")
+	public List<AgenciaPersistenceRemote> findAll();
+	
+}

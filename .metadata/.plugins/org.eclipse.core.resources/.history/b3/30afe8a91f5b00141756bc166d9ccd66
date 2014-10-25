@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Reservapassagems</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Reserva Passagem" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="reservapassagem"
+					value="#{reservapassagemPrime.allReservapassagem}" rowKey="#{reservapassagem.uid}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{reservapassagemPrime.reservapassagemSelecionado}">
+	
+					
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{reservapassagem.uid}" />
+					</p:column> 
+					
+					<p:column headerText="Data da Partida">
+						<h:outputText value="#{reservapassagem.datapartida}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="Hora Partida">
+						<h:outputText value="#{reservapassagem.horapartida}" />
+					</p:column>
+					
+										
+					<p:column headerText="Minuto Partida">
+						<h:outputText value="#{reservapassagem.minutopartida}" />
+					</p:column>
+					
+										
+					<p:column headerText="Origem">
+						<h:outputText value="#{reservapassagem.origem}" />
+					</p:column>
+					
+					
+					<p:column headerText="Destino">
+						<h:outputText value="#{reservapassagem.destino}" />
+					</p:column>
+					
+					<p:column headerText="Vagas Disponiveis">
+						<h:outputText value="#{reservapassagem.vagasdisponiveis}" />
+					</p:column>
+					
+					<p:column headerText="Valor Total">
+						<h:outputText value="#{reservapassagem.valorunitario}" />
+					</p:column>
+
+					<p:column headerText="Agencia">
+						<h:outputText value="#{reservapassagem.agenciaBean.nome}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":freservapassagem:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":freservapassagemA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+				
+			<p:commandButton value="Voltar" action="index.xhtml" icon="ui-icon-home"/>
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Reservapassagem-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Reserva Passagem"
+		widgetVar="cadastro" resizable="false" width="1000" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="freservapassagem">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+				
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{reservapassagemPrime.reservapassagem.uid}"
+					style=" width : 125px;" />
+
+
+				<h:outputLabel value="Data Partida" />
+				<p:calendar id="effect" value="#{reservapassagemPrime.reservapassagem.datapartida}" effect="fold" />
+					
+					<p:column headerText="Hora Partida">
+						<h:outputText value="#{reservapassagem.horapartida}" />
+					</p:column>
+					
+										
+					<p:column headerText="Minuto Partida">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.minutopartida}" />
+					</p:column>
+					
+										
+					<p:column headerText="Origem">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.origem}" />
+					</p:column>
+					
+					
+					<p:column headerText="Destino">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.destino}" />
+					</p:column>
+					
+					<p:column headerText="Vagas Disponiveis">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.vagasdisponiveis}" />
+					</p:column>
+					
+					<p:column headerText="Valor Total">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.valorunitario}" />
+					</p:column>
+
+
+				<h:outputLabel value="Agencia" />
+				<p:selectOneMenu id="agencia"
+					value="#{reservapassagemPrime.reservapassagem.agenciaBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Agencia" />
+					<f:selectItems value="#{reservapassagemPrime.allAgencia}" var="agenciaBean"
+						itemLabel="#{agenciaBean.nome}" itemValue="#{agenciaBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{reservapassagemPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="1000" showEffect="clip" hideEffect="explode">
+		<h:form id="freservapassagemA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{reservapassagemPrime.reservapassagem.uid}"
+					style=" width : 125px;" />
+
+				<p:column headerText="Vagas Disponiveis">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.vagasdisponiveis}" />
+					</p:column>
+					
+				<p:column headerText="Valor Total">
+						<h:outputText value="#{reservapassagemPrime.reservapassagem.valorunitario}" />
+				</p:column>
+
+				<h:outputLabel value="Periodo Inicial" />
+				<p:calendar id="effect" value="#{reservapassagemPrime.reservapassagem.periodoinicial}" effect="fold" />
+				
+			    <h:outputLabel value="Agencia" />
+				<p:selectOneMenu id="agencia"
+					value="#{reservapassagemPrime.reservapassagem.agenciaBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Agencia" />
+					<f:selectItems value="#{reservapassagemPrime.allAgencia}" var="agenciaBean"
+						itemLabel="#{agenciaBean.nome}" itemValue="#{agenciaBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{reservapassagemPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Reservapassagem" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Reservapassagem?" />
+			<br />
+			<p:commandButton value="Sim" action="#{reservapassagemPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

@@ -1,0 +1,119 @@
+package br.iff.pooa20141.agencia.web.controller;
+
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.context.RequestContext;
+
+import br.iff.pooa20141.agencia.model.controller.HotelPersistence;
+import br.iff.pooa20141.agencia.model.controller.QualificacaoHotelPersistence;
+import br.iff.pooa20141.agencia.model.controller.UsuarioPersistence;
+import br.iff.pooa20141.agencia.model.entity.Hotel;
+import br.iff.pooa20141.agencia.model.entity.Qualificacaohotel;
+import br.iff.pooa20141.agencia.model.entity.Usuario;
+
+
+@ManagedBean(name = "qualificacaohotelPrime")
+@SessionScoped
+public class QualificacaoHotelWebController {
+
+	@EJB(lookup = "java:app/AgenciaWEB/HotelPersistence!br.iff.pooa20141.agencia.model.controller.HotelPersistence")
+	private HotelPersistence jhotel;
+
+	@EJB(lookup = "java:app/AgenciaWEB/UsuarioPersistence!br.iff.pooa20141.agencia.model.controller.UsuarioPersistence")
+	private UsuarioPersistence jusuario;
+	
+	@EJB(lookup = "java:app/agenciaEJB/QualificacaoHotelPersistence!br.iff.pooa20141.agencia.model.controller.QualificacaoHotelPersistence")
+	private QualificacaoHotelPersistence jqualificacaohotel;
+
+	private Qualificacaohotel qualificacaohotel;
+	private Qualificacaohotel qualificacaohotelSelecionado = new Qualificacaohotel();
+
+	public Qualificacaohotel getQualificacaohotel() {
+		if (qualificacaohotel == null) {
+			qualificacaohotel = new Qualificacaohotel();
+		}
+		return qualificacaohotel;
+	}
+
+	public List<Qualificacaohotel> getAllQualificacaohotel() {
+		return jqualificacaohotel.findAll();
+	}
+
+	public List<Hotel> getAllHotel() {
+		return jhotel.findAll();
+	}
+	public List<Usuario> getAllUsuario() {
+		return jusuario.findAll();
+	}
+	public void salva() {
+		
+		if (jqualificacaohotel.find(qualificacaohotel.getUid()) != null) {
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("reserva de diaria Ja Cadastrado"));
+
+		} else {
+
+			jqualificacaohotel.insert(qualificacaohotel);
+
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("Cadastrado com sucesso!"));
+		}
+		
+		RequestContext.getCurrentInstance().execute("cadastro.hide()");
+		;
+		
+	}
+
+	public void delete() {
+
+		if (jqualificacaohotel.find(qualificacaohotelSelecionado.getUid()) == null) {
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("A reserva de diaria não Existe"));
+
+		} else {
+			jqualificacaohotel.delete(qualificacaohotelSelecionado.getUid());
+
+		}
+		RequestContext.getCurrentInstance().execute("deleta.hide()");
+	}
+
+	public Qualificacaohotel getQualificacaohotelSelecionado() {
+
+		return qualificacaohotelSelecionado;
+	}
+
+	public void setQualificacaohotelSelecionado(Qualificacaohotel qualificacaohotelSelecionado) {
+		this.qualificacaohotelSelecionado = qualificacaohotelSelecionado;
+
+	}
+
+	public void update() {
+
+		
+		if (jqualificacaohotel.find(qualificacaohotelSelecionado.getUid()) == null) {
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage(" A reserva da diaria não Existe"));
+
+		} else {
+
+			jqualificacaohotel.update(qualificacaohotelSelecionado);
+
+			FacesContext.getCurrentInstance().addMessage("frmTeste:msgOK",
+					new FacesMessage("Alterado com sucesso!"));
+		}
+		RequestContext.getCurrentInstance().execute("altera.hide()");
+		;
+		
+	}
+
+	public QualificacaoHotelWebController() {
+
+	}
+
+}

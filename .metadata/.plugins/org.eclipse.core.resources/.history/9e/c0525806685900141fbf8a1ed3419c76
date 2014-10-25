@@ -1,0 +1,5 @@
+package br.iff.pooa20141agencia.web.controller;
+
+public class EntityConverter {
+
+}

@@ -1,0 +1,93 @@
+package br.iff.pooa20141.agencia.model.controller;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlElement;
+
+import br.iff.pooa20141.agencia.model.entity.Hotel;
+import br.iff.pooa20141.agencia.model.entity.Reservadiaria;
+
+@Stateless
+@LocalBean
+public class ReservadiariaPersistence extends AbstractPersistence implements
+		ReservadiariaPersistenceRemote {
+
+	/* (non-Javadoc)
+	 * @see br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote#inserir(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Reservadiaria inserir(String uid, Date periodofinal,Date periodoinicial, Integer vagasdisponiveis,
+			Integer horasaida, Integer minutosaida,	float  valorunitario,Hotel hotel)
+			{
+	
+		
+		Reservadiaria reservadiaria = new Reservadiaria();
+		reservadiaria.setUid(uid);
+		reservadiaria.setPeriodoFinal(periodofinal);
+		reservadiaria.setPeriodoInicial(periodoinicial);
+		reservadiaria.setVagasDisponiveis(vagasdisponiveis);
+		reservadiaria.setValorunitario(valorunitario);
+		
+		
+	
+		
+		reservadiaria.setHotelBean(hotel);
+		super.insert(reservadiaria);
+		return reservadiaria;
+	
+	}
+
+	/* (non-Javadoc)
+	 * @see br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote#update(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Reservadiaria update(String uid, Date dataentrada,Integer horaentrada, Integer minutoentrada,  Date datasaida,
+			Integer horasaida, Integer minutosaida,	float  valorunitario,Hotel hotel)
+	{
+		Reservadiaria reservadiaria = super.find(Reservadiaria.class, uid);
+		
+		reservadiaria.setUid(uid);
+		reservadiaria.setDataentrada(dataentrada);
+		reservadiaria.setDatasaida(datasaida);
+		reservadiaria.setHoraentrada(horaentrada);
+		reservadiaria.setHoraentrada(horaentrada);	
+		reservadiaria.setHorasaida(horasaida);
+		reservadiaria.setMinutoentrada(minutoentrada);
+		reservadiaria.setValorunitario(valorunitario);
+		
+		super.update(reservadiaria);
+		return reservadiaria;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote#find(java.lang.String)
+	 */
+	@Override
+	public Reservadiaria find(String uid) {
+		return super.find(Reservadiaria.class, uid);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote#delete(java.lang.String)
+	 */
+	@Override
+	public void delete(String uid) {
+		super.delete(Reservadiaria.class, uid);
+
+	}
+
+	/* (non-Javadoc)
+	 * @see br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote#findAll()
+	 */
+	@XmlElement(name = "reservadiarias")
+	public List<Reservadiaria> findAll() {
+		// TODO Auto-generated method stub
+		return  super.findAll(Reservadiaria.class);
+	}
+
+}

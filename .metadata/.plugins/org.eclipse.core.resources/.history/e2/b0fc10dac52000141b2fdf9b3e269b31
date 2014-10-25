@@ -1,0 +1,164 @@
+package agenciaEJB;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the hotel database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Hotel.findAll", query="SELECT h FROM Hotel h")
+public class Hotel implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name="\"codigoHotel\"")
+	private String codigoHotel;
+
+	private String cidade;
+
+	private String cnpj;
+
+	private String email;
+
+	private String endereco;
+
+	private String estado;
+
+	private String imagem;
+
+	private String nome;
+
+	private String pais;
+
+	//bi-directional many-to-one association to QualificacaoHotel
+	@OneToMany(mappedBy="hotel")
+	private List<QualificacaoHotel> qualificacaoHotels;
+
+	//bi-directional many-to-one association to ReservaDiaria
+	@OneToMany(mappedBy="hotel")
+	private List<ReservaDiaria> reservaDiarias;
+
+	public Hotel() {
+	}
+
+	public String getCodigoHotel() {
+		return this.codigoHotel;
+	}
+
+	public void setCodigoHotel(String codigoHotel) {
+		this.codigoHotel = codigoHotel;
+	}
+
+	public String getCidade() {
+		return this.cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getCnpj() {
+		return this.cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEndereco() {
+		return this.endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getImagem() {
+		return this.imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getPais() {
+		return this.pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	public List<QualificacaoHotel> getQualificacaoHotels() {
+		return this.qualificacaoHotels;
+	}
+
+	public void setQualificacaoHotels(List<QualificacaoHotel> qualificacaoHotels) {
+		this.qualificacaoHotels = qualificacaoHotels;
+	}
+
+	public QualificacaoHotel addQualificacaoHotel(QualificacaoHotel qualificacaoHotel) {
+		getQualificacaoHotels().add(qualificacaoHotel);
+		qualificacaoHotel.setHotel(this);
+
+		return qualificacaoHotel;
+	}
+
+	public QualificacaoHotel removeQualificacaoHotel(QualificacaoHotel qualificacaoHotel) {
+		getQualificacaoHotels().remove(qualificacaoHotel);
+		qualificacaoHotel.setHotel(null);
+
+		return qualificacaoHotel;
+	}
+
+	public List<ReservaDiaria> getReservaDiarias() {
+		return this.reservaDiarias;
+	}
+
+	public void setReservaDiarias(List<ReservaDiaria> reservaDiarias) {
+		this.reservaDiarias = reservaDiarias;
+	}
+
+	public ReservaDiaria addReservaDiaria(ReservaDiaria reservaDiaria) {
+		getReservaDiarias().add(reservaDiaria);
+		reservaDiaria.setHotel(this);
+
+		return reservaDiaria;
+	}
+
+	public ReservaDiaria removeReservaDiaria(ReservaDiaria reservaDiaria) {
+		getReservaDiarias().remove(reservaDiaria);
+		reservaDiaria.setHotel(null);
+
+		return reservaDiaria;
+	}
+
+}

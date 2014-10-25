@@ -1,0 +1,159 @@
+package br.iff.pooa20141.agencia.model.test;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Date;
+import java.util.UUID;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import br.iff.pooa20141.agencia.model.controller.PacotePersistenceRemote;
+import br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote;
+import br.iff.pooa20141.agencia.model.controller.ReservapassagemPersistenceRemote;
+import br.iff.pooa20141.agencia.model.controller.UsuarioPersistenceRemote;
+import br.iff.pooa20141.agencia.model.entity.Usuario;
+import br.iff.pooa20141.agencia.model.entity.Reservapassagem;
+import br.iff.pooa20141.agencia.model.entity.Pacote;
+import br.iff.pooa20141.agencia.model.entity.Reservadiaria;
+
+
+public class PacoteTeste {
+
+	private ReservadiariaPersistenceRemote reservaDiariaPR;
+	private PacotePersistenceRemote pacotePR;
+	private ReservapassagemPersistenceRemote reservaPassagemPR;
+	private UsuarioPersistenceRemote usuarioPR;
+	
+	Reservadiaria reservaDiaria;
+	String uidReservaDiaria = UUID.randomUUID().toString();
+	String uidUsuario = UUID.randomUUID().toString();
+	String uidDiaria = UUID.randomUUID().toString();
+	String uidPassagem = UUID.randomUUID().toString();
+	
+	@Before
+	public void setUp() throws Exception {
+		Context context = null;
+
+		pacotePR = null;
+		reservaDiariaPR= null;
+		reservaPassagemPR = null;
+		usuarioPR = null;
+		
+		try {
+
+			context = JNDILookupClass.getInitialContext();
+
+			reservaPassagemPR = (ReservapassagemPersistenceRemote) context
+					.lookup("ejb:AgenciaEAR/agenciaEJB/ReservapassagemPersistence!br.iff.pooa20141.agencia.model.controller.ReservapassagemPersistenceRemote");
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+
+		}
+	
+		try {
+
+			context = JNDILookupClass.getInitialContext();
+
+			reservaDiariaPR = (ReservadiariaPersistenceRemote) context
+					.lookup("ejb:AgenciaEAR/agenciaEJB/ReservadiariaPersistence!br.iff.pooa20141.agencia.model.controller.ReservadiariaPersistenceRemote");
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+
+		}
+		
+		try {
+
+			context = JNDILookupClass.getInitialContext();
+			
+
+			usuarioPR = (UsuarioPersistenceRemote) context
+					.lookup("ejb:AgenciaEAR/agenciaEJB/UsuarioPersistence!br.iff.pooa20141.agencia.model.controller.UsuarioPersistenceRemote");
+		} catch (NamingException e) {
+			e.printStackTrace();
+
+		}
+
+
+		try {
+
+			context = JNDILookupClass.getInitialContext();
+
+			pacotePR = (PacotePersistenceRemote) context
+					.lookup("ejb:AgenciaEAR/agenciaEJB/PacotePersistence!br.iff.pooa20141.agencia.model.controller.PacotePersistenceRemote");
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+
+		}
+
+		uidReservaDiaria = UUID.randomUUID().toString();
+		reservaDiaria = reservaDiariaPR.inserir(uidReservaDiaria,"Nome", "cnpj", "cidade", "pais");
+		
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		
+		reservaDiariaPR.delete(uidReservaDiaria);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testInserir() {
+
+		String uid = UUID.randomUUID().toString();
+		
+		Pacote pacote =pacotePR.inserir(uid,new Date("12/08/2014"),06,00, new Date("14/08/2014"), 12,
+						30,224.2f , reservaDiaria);
+			
+		assertEquals(pacote.getUid(), uid);
+		pacotePR.delete(uid);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testupdate() {
+		
+		
+		String uid = UUID.randomUUID().toString();
+		pacotePR.inserir(uid,new Date("12/08/2014"),06,00, new Date("14/08/2014"), 12,
+				30,224.2f , reservaDiaria);
+
+		Pacote pacoteUp =pacotePR.update(uid,new Date("12/08/2014"),07,00, new Date("14/08/2014"), 12,
+				30,224.2f , reservaDiaria);
+
+		assertEquals(pacoteUp.getHoraentrada(), 07,0);
+		pacotePR.delete(uid);
+	}
+
+	@Test
+	public void testfind() {
+		
+		String uid = UUID.randomUUID().toString();
+		pacotePR.inserir(uid,new Date("12/08/2014"),06,00, new Date("14/08/2014"), 12,
+				30,224.2f , reservaDiaria);
+
+		Pacote pacoteUp =pacotePR.find(uid);
+
+		assertEquals(pacoteUp.getHoraentrada(), 06,0);
+		pacotePR.delete(uid);
+	}
+	@Test
+	public void testdelete() {
+		
+		String uid = UUID.randomUUID().toString();
+		pacotePR.inserir(uid,new Date("12/08/2014"),06,00, new Date("14/08/2014"), 12,
+				30,224.2f , reservaDiaria);
+
+		pacotePR.delete(uid);
+		assertEquals(pacotePR.find(uid),null);
+	}
+
+
+}

@@ -1,0 +1,142 @@
+package br.iff.pooa20141.agencia.model.entity;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
+
+
+/**
+ * The persistent class for the reservapassagem database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Reservapassagem.findAll", query="SELECT r FROM Reservapassagem r")
+public class Reservapassagem implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private String uid;
+
+	@Temporal(TemporalType.DATE)
+	private Date datapartida;
+
+	private String destino;
+
+	private Integer horapartida;
+
+	private Integer minutopartida;
+
+	private String origem;
+
+	private Integer vagasdisponiveis;
+
+	private float valorunitario;
+
+	//bi-directional many-to-one association to Pacote
+	@OneToMany(mappedBy="reservapassagemBean")
+	private List<Pacote> pacotes;
+
+	//bi-directional many-to-one association to Agencia
+	@ManyToOne
+	@JoinColumn(name="agencia")
+	private Agencia agenciaBean;
+
+	public Reservapassagem() {
+	}
+
+	public String getUid() {
+		return this.uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public Date getDatapartida() {
+		return this.datapartida;
+	}
+
+	public void setDatapartida(Date datapartida) {
+		this.datapartida = datapartida;
+	}
+
+	public String getDestino() {
+		return this.destino;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+
+	public Integer getHorapartida() {
+		return this.horapartida;
+	}
+
+	public void setHorapartida(Integer horapartida) {
+		this.horapartida = horapartida;
+	}
+
+	public Integer getMinutopartida() {
+		return this.minutopartida;
+	}
+
+	public void setMinutopartida(Integer minutopartida) {
+		this.minutopartida = minutopartida;
+	}
+
+	public String getOrigem() {
+		return this.origem;
+	}
+
+	public void setOrigem(String origem) {
+		this.origem = origem;
+	}
+
+	public Integer getVagasdisponiveis() {
+		return this.vagasdisponiveis;
+	}
+
+	public void setVagasdisponiveis(Integer vagasdisponiveis) {
+		this.vagasdisponiveis = vagasdisponiveis;
+	}
+
+	public float getValorunitario() {
+		return this.valorunitario;
+	}
+
+	public void setValorunitario(float valorunitario) {
+		this.valorunitario = valorunitario;
+	}
+
+	public List<Pacote> getPacotes() {
+		return this.pacotes;
+	}
+
+	public void setPacotes(List<Pacote> pacotes) {
+		this.pacotes = pacotes;
+	}
+
+	public Pacote addPacote(Pacote pacote) {
+		getPacotes().add(pacote);
+		pacote.setReservapassagemBean(this);
+
+		return pacote;
+	}
+
+	public Pacote removePacote(Pacote pacote) {
+		getPacotes().remove(pacote);
+		pacote.setReservapassagemBean(null);
+
+		return pacote;
+	}
+
+	public Agencia getAgenciaBean() {
+		return this.agenciaBean;
+	}
+
+	public void setAgenciaBean(Agencia agenciaBean) {
+		this.agenciaBean = agenciaBean;
+	}
+
+}

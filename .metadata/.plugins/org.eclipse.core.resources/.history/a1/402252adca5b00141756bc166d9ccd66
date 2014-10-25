@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Qualificacao de Passagens</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Qualificacao Passagem" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="qualificacaopassagem"
+					value="#{qualificacaopassagemPrime.allQualificacaopassagem}" rowKey="#{qualificacaopassagem.uid}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{qualificacaopassagemPrime.qualificacaopassagemSelecionado}">
+	
+					
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{qualificacaopassagem.uid}" />
+					</p:column> 
+		
+
+					<p:column headerText="Agencia">
+						<h:outputText value="#{qualificacaopassagem.agenciaBean.nome}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fqualificacaopassagem:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":fqualificacaopassagemA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+				
+			<p:commandButton value="Voltar" action="index.xhtml" icon="ui-icon-home"/>
+
+
+
+		</center>
+	</p:fieldset>
+	
+	
+
+</h:body>
+</html>
+	

@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Reserva Hotel</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar de Reserva diaria" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="reservadiaria"
+					value="#{reservadiariaPrime.allReservadiaria}" rowKey="#{reservadiaria.uid}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{reservadiariaPrime.reservadiariaSelecionado}">
+	
+					
+					<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{reservadiaria.uid}" />
+					</p:column> 
+					
+					<p:column headerText="Periodo Inicial">
+						<h:outputText value="#{reservadiaria.periodoinicial}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Periodo Final">
+						<h:outputText value="#{reservadiaria.periodofinal}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+	
+					<p:column headerText="Vagas Disponiveis">
+						<h:outputText value="#{reservadiaria.vagasdisponiveis}" />
+					</p:column>
+					
+					<p:column headerText="Valor Total">
+						<h:outputText value="#{reservadiaria.valorunitario}" />
+					</p:column>
+
+					<p:column headerText="Hotel">
+						<h:outputText value="#{reservadiaria.hotelBean.nome}" />
+					</p:column>
+					
+
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":freservadiaria:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":freservadiariaA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+				
+			<p:commandButton value="Voltar" action="index.xhtml" icon="ui-icon-home"/>
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Reservadiaria-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Qualificacao Diaria"
+		widgetVar="cadastro" resizable="true" width="600" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="freservadiaria">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+				
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{reservadiariaPrime.reservadiaria.uid}"
+					style=" width : 125px;" />
+
+
+				<h:outputLabel value="Vagas Disponiveis" />
+					<p:inputText value="#{reservadiariaPrime.reservadiaria.vagasdisponiveis}"
+					style=" width : 125px;" />
+					
+				<h:outputLabel value="Valor Unitario" />
+				<p:inputText value="#{reservadiariaPrime.reservadiaria.valorunitario}"
+					style=" width : 125px;" />
+					
+				<h:outputLabel value="Periodo Inicial" />
+				<p:calendar id="effect" value="#{reservadiariaPrime.reservadiaria.periodoinicial}" effect="fold" />
+				
+				<h:outputLabel value="Periodo Final" />
+				<p:calendar id="effect2" value="#{reservadiariaPrime.reservadiaria.periodofinal}" effect="fold" />
+		
+<h:outputLabel value="Hotel" />
+				<p:selectOneMenu id="reservadiaria"
+					value="#{reservadiariaPrime.reservadiaria.hotelBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Hotel" />
+					<f:selectItems value="#{reservadiariaPrime.allHotel}" var="hotelBean"
+						itemLabel="#{hotelBean.nome}" itemValue="#{hotelBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{reservadiariaPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" heigth="600" showEffect="clip" hideEffect="explode">
+		<h:form id="freservadiariaA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+				
+				
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{reservadiariaPrime.reservadiaria.uid}"
+					style=" width : 125px;" />
+
+
+				<h:outputLabel value="Vagas Disponiveis" />
+					<p:inputText value="#{reservadiariaPrime.reservadiaria.vagasdisponiveis}"
+					style=" width : 125px;" />
+					
+				<h:outputLabel value="Valor Unitario" />
+				<p:inputText value="#{reservadiariaPrime.reservadiaria.valorunitario}"
+					style=" width : 125px;" />
+					
+				<h:outputLabel value="Periodo Inicial" />
+				<p:calendar id="effect" value="#{reservadiariaPrime.reservadiaria.periodoinicial}" effect="fold" />
+				
+				<h:outputLabel value="Periodo Final" />
+				<p:calendar id="effect2" value="#{reservadiariaPrime.reservadiaria.periodofinal}" effect="fold" />
+		
+<h:outputLabel value="Hotel" />
+				<p:selectOneMenu id="reservadiaria"
+					value="#{reservadiariaPrime.reservadiaria.hotelBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Hotel" />
+					<f:selectItems value="#{reservadiariaPrime.allHotel}" var="hotelBean"
+						itemLabel="#{hotelBean.nome}" itemValue="#{hotelBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+						
+				
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{reservadiariaPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Reservadiaria" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Reservadiaria?" />
+			<br />
+			<p:commandButton value="Sim" action="#{reservadiariaPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

@@ -1,0 +1,150 @@
+package agenciaEJB;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the usuario database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
+public class Usuario implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name="\"codigoUsuario\"")
+	private String codigoUsuario;
+
+	private String email;
+
+	private String login;
+
+	private String nome;
+
+	private String senha;
+
+	//bi-directional many-to-one association to Pacote
+	@OneToMany(mappedBy="usuario")
+	private List<Pacote> pacotes;
+
+	//bi-directional many-to-one association to QualificacaoAgencia
+	@OneToMany(mappedBy="usuario")
+	private List<QualificacaoAgencia> qualificacaoAgencias;
+
+	//bi-directional many-to-one association to QualificacaoHotel
+	@OneToMany(mappedBy="usuario")
+	private List<QualificacaoHotel> qualificacaoHotels;
+
+	public Usuario() {
+	}
+
+	public String getCodigoUsuario() {
+		return this.codigoUsuario;
+	}
+
+	public void setCodigoUsuario(String codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLogin() {
+		return this.login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getSenha() {
+		return this.senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public List<Pacote> getPacotes() {
+		return this.pacotes;
+	}
+
+	public void setPacotes(List<Pacote> pacotes) {
+		this.pacotes = pacotes;
+	}
+
+	public Pacote addPacote(Pacote pacote) {
+		getPacotes().add(pacote);
+		pacote.setUsuario(this);
+
+		return pacote;
+	}
+
+	public Pacote removePacote(Pacote pacote) {
+		getPacotes().remove(pacote);
+		pacote.setUsuario(null);
+
+		return pacote;
+	}
+
+	public List<QualificacaoAgencia> getQualificacaoAgencias() {
+		return this.qualificacaoAgencias;
+	}
+
+	public void setQualificacaoAgencias(List<QualificacaoAgencia> qualificacaoAgencias) {
+		this.qualificacaoAgencias = qualificacaoAgencias;
+	}
+
+	public QualificacaoAgencia addQualificacaoAgencia(QualificacaoAgencia qualificacaoAgencia) {
+		getQualificacaoAgencias().add(qualificacaoAgencia);
+		qualificacaoAgencia.setUsuario(this);
+
+		return qualificacaoAgencia;
+	}
+
+	public QualificacaoAgencia removeQualificacaoAgencia(QualificacaoAgencia qualificacaoAgencia) {
+		getQualificacaoAgencias().remove(qualificacaoAgencia);
+		qualificacaoAgencia.setUsuario(null);
+
+		return qualificacaoAgencia;
+	}
+
+	public List<QualificacaoHotel> getQualificacaoHotels() {
+		return this.qualificacaoHotels;
+	}
+
+	public void setQualificacaoHotels(List<QualificacaoHotel> qualificacaoHotels) {
+		this.qualificacaoHotels = qualificacaoHotels;
+	}
+
+	public QualificacaoHotel addQualificacaoHotel(QualificacaoHotel qualificacaoHotel) {
+		getQualificacaoHotels().add(qualificacaoHotel);
+		qualificacaoHotel.setUsuario(this);
+
+		return qualificacaoHotel;
+	}
+
+	public QualificacaoHotel removeQualificacaoHotel(QualificacaoHotel qualificacaoHotel) {
+		getQualificacaoHotels().remove(qualificacaoHotel);
+		qualificacaoHotel.setUsuario(null);
+
+		return qualificacaoHotel;
+	}
+
+}

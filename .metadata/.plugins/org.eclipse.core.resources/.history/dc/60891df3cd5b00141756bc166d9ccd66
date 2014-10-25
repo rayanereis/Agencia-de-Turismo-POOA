@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Gerenciador de Qualificacao de Passagens</title>
+	<link type="text/css" rel="stylesheet" href="dot-luv/skin.css" />
+</h:head>
+<h:body>
+
+	<p:fieldset legend="Gerenciar Qualificacao Passagem" toggleable="true"
+		toggleSpeed="500">
+		<h:form id="form">
+			<center>
+				<p:dataTable id="tabela" var="qualificacaopassagem"
+					value="#{qualificacaopassagemPrime.allQualificacaopassagem}" rowKey="#{qualificacaopassagem.uid}"
+					selectionMode="single" scrollable="true" scrollHeight="300"
+					scrollWidth="850" selection="#{qualificacaopassagemPrime.qualificacaopassagemSelecionado}">
+				<p:column headerText="Codigo" width="150">
+						<h:outputText value="#{qualificacaopassagem.uid}" />
+					</p:column> 
+					
+					<p:column headerText="Data da Partida">
+						<h:outputText value="#{qualificacaopassagem.datapartida}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column headerText="Hora Partida">
+						<h:outputText value="#{qualificacaopassagem.horapartida}" />
+					</p:column>
+					
+										
+					<p:column headerText="Minuto Partida">
+						<h:outputText value="#{qualificacaopassagem.minutopartida}" />
+					</p:column>
+					
+										
+					<p:column headerText="Origem">
+						<h:outputText value="#{qualificacaopassagem.origem}" />
+					</p:column>
+					
+					
+					<p:column headerText="Destino">
+						<h:outputText value="#{qualificacaopassagem.destino}" />
+					</p:column>
+					
+					<p:column headerText="Vagas Disponiveis">
+						<h:outputText value="#{qualificacaopassagem.vagasdisponiveis}" />
+					</p:column>
+					
+					<p:column headerText="Valor Unitario">
+						<h:outputText value="#{qualificacaopassagem.valorunitario}" />
+					</p:column>
+
+					<p:column headerText="Agencia">
+						<h:outputText value="#{qualificacaopassagem.agenciaBean.nome}" />
+					</p:column>
+
+				</p:dataTable>
+			</center>
+		</h:form>
+		<center>
+			<p:commandButton value="Cadastrar" icon="ui-icon-document"
+				update=":fqualificacaopassagem:displayCadastro" oncomplete="cadastro.show()" />
+
+			<p:commandButton value="Alterar" icon="ui-icon-search"
+				oncomplete="altera.show()" update=":fqualificacaopassagemA:displayaltera" />
+
+			<p:commandButton value="Deletar" icon="ui-icon-disk"
+				oncomplete="deleta.show()" update=":displaydeleta" />
+				
+			<p:commandButton value="Voltar" action="index.xhtml" icon="ui-icon-home"/>
+
+
+
+		</center>
+	</p:fieldset>
+
+	<p:growl id="menssagem" showDetail="true" life="3000" for="msg" />
+
+	<!--............................................................................DIALOGOS E FUNÇÕES-->
+	<!--CADASTRO Qualificacaopassagem-->
+	<p:dialog id="dialogCadastro" header="Cadastro de Qualificacao Passagem"
+		widgetVar="cadastro" resizable="true" width="600" showEffect="clip"
+		hideEffect="explode">
+		<h:form id="fqualificacaopassagem">
+			<h:panelGrid id="displayCadastro" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+				
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{qualificacaopassagemPrime.qualificacaopassagem.uid}"
+					style=" width : 125px;" />
+
+				<h:outputLabel value="Agencia" />
+				<p:selectOneMenu id="agencia"
+					value="#{qualificacaopassagemPrime.qualificacaopassagem.agenciaBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Agencia" />
+					<f:selectItems value="#{qualificacaopassagemPrime.allAgencia}" var="agenciaBean"
+						itemLabel="#{agenciaBean.nome}" itemValue="#{agenciaBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu>
+
+
+
+				<p:commandButton value="Cadastrar" icon="ui-icon-search"
+					action="#{qualificacaopassagemPrime.salva()}"
+					update=":form:tabela,:menssagem" />
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+	<script type="text/javascript">
+           function camposObrigatorios() {
+               jQuery('#form2').effect("shake", { times:3 }, 100);
+           }
+      </script>
+
+	<!-- Altera -->
+
+	<p:dialog id="dialogaltera" header="Altera" widgetVar="altera"
+		resizable="false" width="500" heigth="600" showEffect="clip" hideEffect="explode">
+		<h:form id="fqualificacaopassagemA">
+			<h:panelGrid id="displayaltera" border='1' columns="2"
+				styleClass="panelGrid" rowClasses="panelFirstLine,panelNextLine">
+				
+						
+				<h:outputLabel value="Codigo" />
+				<p:inputText value="#{qualificacaopassagemPrime.qualificacaopassagem.uid}"
+					style=" width : 125px;" />
+
+
+			<h:outputLabel value="Hora Partida" />
+				<p:inputText value="#{qualificacaopassagemPrime.qualificacaopassagem.horapartida}"
+					style=" width : 125px;" />
+
+				
+			    <h:outputLabel value="Agencia" />
+				<p:selectOneMenu id="agencia"
+					value="#{qualificacaopassagemPrime.qualificacaopassagem.agenciaBean}"
+					converter="entityConverter" effect="fade" var="i" filter="true" style="width:260px" panelStyle="width:250px"
+					filterMatchMode="startsWith">
+					<f:selectItem itemValue="" itemLabel="Selecione Agencia" />
+					<f:selectItems value="#{qualificacaopassagemPrime.allAgencia}" var="agenciaBean"
+						itemLabel="#{agenciaBean.nome}" itemValue="#{agenciaBean}" />
+						<p:column>
+						   #{i.uid} - #{i.nome}
+						</p:column>
+				</p:selectOneMenu> 		
+
+
+				<p:commandButton value="Alterar" icon="ui-icon-search"
+					action="#{qualificacaopassagemPrime.update()}"
+					update=":form:tabela,:menssagem" />
+
+
+
+
+			</h:panelGrid>
+			<br />
+		</h:form>
+	</p:dialog>
+
+
+
+	<!--DELEÇÂO DE CONTATO-->
+	<p:dialog id="dialogDeleta" header="Deletar Qualificacaopassagem" widgetVar="deleta"
+		width="500" showEffect="clip" hideEffect="fold">
+		<h:panelGrid id="displaydeleta" columns="2" cellpadding="4">
+			<h:outputText value="Deseja exluir realmente o Qualificacaopassagem?" />
+			<br />
+			<p:commandButton value="Sim" action="#{qualificacaopassagemPrime.delete()}"
+				update=":form:tabela,:menssagem" />
+			<p:commandButton value="Não" oncomplete="deleta.hide()"
+				update=":form:tabela,:menssagem" />
+		</h:panelGrid>
+	</p:dialog>
+
+
+</h:body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+	<h:head>
+		<title>Agencia de Turismo</title>
+	</h:head> 
+	<body> 
+	
+	<h:form> 
+    <p:growl id="messages" showDetail="false"/>
+ 
+    <h3 style="margin-top:0">Plain Menu</h3>
+    <p:menu>
+        <p:submenu label="Agencia de Turismo">
+
+            <p:menuitem value="Agencia" url="agencia.xhtml" icon="ui-icon-home"/>
+            <p:menuitem value="Hotel" url="hotel.xhtml" icon="ui-icon-home"/>
+            <p:menuitem value="Usuario" url="usuario.xhtml" icon="ui-icon-home"/>
+        </p:submenu>
+    </p:menu>
+  </h:form>
+	
+	
+	</body> 
+</html>
+
+
+
+

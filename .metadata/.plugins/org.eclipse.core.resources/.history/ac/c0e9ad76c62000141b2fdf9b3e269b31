@@ -1,0 +1,89 @@
+package br.iff.poa20141.agencia.model.entity;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the "agenciaAerea" database table.
+ * 
+ */
+@Entity
+@Table(name="\"agenciaAerea\"")
+@NamedQuery(name="AgenciaAerea.findAll", query="SELECT a FROM AgenciaAerea a")
+public class AgenciaAerea implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name="\"codigoAgencia\"")
+	private String codigoAgencia;
+
+	private String cnpj;
+
+	private String email;
+
+	private String nome;
+
+	//bi-directional many-to-one association to QualificacaoAgencia
+	@OneToMany(mappedBy="agenciaAerea")
+	private List<QualificacaoAgencia> qualificacaoAgencias;
+
+	public AgenciaAerea() {
+	}
+
+	public String getCodigoAgencia() {
+		return this.codigoAgencia;
+	}
+
+	public void setCodigoAgencia(String codigoAgencia) {
+		this.codigoAgencia = codigoAgencia;
+	}
+
+	public String getCnpj() {
+		return this.cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNome() {
+		return this.nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public List<QualificacaoAgencia> getQualificacaoAgencias() {
+		return this.qualificacaoAgencias;
+	}
+
+	public void setQualificacaoAgencias(List<QualificacaoAgencia> qualificacaoAgencias) {
+		this.qualificacaoAgencias = qualificacaoAgencias;
+	}
+
+	public QualificacaoAgencia addQualificacaoAgencia(QualificacaoAgencia qualificacaoAgencia) {
+		getQualificacaoAgencias().add(qualificacaoAgencia);
+		qualificacaoAgencia.setAgenciaAerea(this);
+
+		return qualificacaoAgencia;
+	}
+
+	public QualificacaoAgencia removeQualificacaoAgencia(QualificacaoAgencia qualificacaoAgencia) {
+		getQualificacaoAgencias().remove(qualificacaoAgencia);
+		qualificacaoAgencia.setAgenciaAerea(null);
+
+		return qualificacaoAgencia;
+	}
+
+}

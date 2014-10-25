@@ -1,0 +1,9 @@
+INDEX VERSION 1.3+/home/rayane/Documents/workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+749123482.index
+2508801737.index
+3737078366.index
+3347342673.index
+2062759708.index
+1927586375.index
+2047865466.index
+2448197646.index
